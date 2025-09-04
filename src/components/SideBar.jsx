@@ -2,7 +2,7 @@ export default function SideBar({ noteData, onSelectNote, handleSelectNote, setA
     return (
         <div className={`
             sideBar 
-            w-1.5/4 max-md:w-2/4 
+            w-1/4 max-md:w-2/4 
             h-screen 
             bg-stone-900 
             rounded-md 
@@ -30,7 +30,7 @@ export default function SideBar({ noteData, onSelectNote, handleSelectNote, setA
                             setOpenMenu(false); // Close the menu when a note is selected
                         }}
                     >
-                        <h3 className="font-semibold text-xl w-inherit">{note.title.length > 20 ? note.title.slice(0, 20) + "..." : note.title}</h3>
+                        <h3 className="font-semibold text-lg max-md:text-[16px] w-inherit">{note.title.length > 20 ? note.title.slice(0, 20) + "..." : note.title}</h3>
                         <p className="pt-2">{note.content.length > 20 ? note.content.slice(0, 20) + "..." : note.content}</p>
                     </li>
                 ))}
