@@ -14,13 +14,13 @@ export default function NewNote({ handleSave, note, onCancelNote, setTitle, setC
                     <input 
                         type="text" 
                         placeholder="Note Title" 
-                        className="px-4 py-2 text-xl rounded border border-stone-300 w-[30rem] max-md:w-full "
+                        className="px-4 py-2 text-xl rounded-t-2xl border border-stone-300 w-[30rem] max-md:w-full "
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
                     />
                     <textarea 
                         placeholder="Note Content" 
-                        className="px-4 py-2 rounded border border-stone-300 h-32"
+                        className="px-4 py-2 rounded-b-2xl border border-stone-300 h-32"
                         value={content}
                         onChange={(e) => setContent(e.target.value)}
                     ></textarea>
