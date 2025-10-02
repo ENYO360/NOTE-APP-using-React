@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth, db } from './firebase';
-import { 
-  collection, 
-  addDoc, 
-  query, 
-  where, 
-  onSnapshot, 
-  updateDoc, 
+import {
+  collection,
+  addDoc,
+  query,
+  where,
+  onSnapshot,
+  updateDoc,
   doc,
   deleteDoc,
   serverTimestamp
@@ -40,7 +40,7 @@ function App() {
     return () => unsubscribe();
   }, []);
 
-    const selectedNote = noteData.find(note => note.id === selectedNoteId); // Find the selected note by ID
+  const selectedNote = noteData.find(note => note.id === selectedNoteId); // Find the selected note by ID
 
   useEffect(() => {
     if (appContent !== 'newNote' && selectedNote) {
@@ -68,6 +68,22 @@ function App() {
 
     return () => unsubscribe();
   }, [user]);
+
+  const menuRef = useRef(null);
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (openMenu && menuRef.current && !menuRef.current.contains(event.target)) {
+        handleCloseMenu(); // Close the menu if clicked outside
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [openMenu]);
 
   function handleCreateNote() {
     setAppContent('newNote'); // Switch to NewNote component
@@ -100,7 +116,7 @@ function App() {
         createdAt: serverTimestamp(),
       });
       setSelectedNoteId(docRef.id);
-    } catch(err) {
+    } catch (err) {
       console.error("Error adding note:", err);
     }
   }
@@ -157,20 +173,21 @@ function App() {
 
   function handleCloseMenu() {
     setOpenMenu(false);
+    console.log('Menu closed');
   }
 
-    const handleLogout = async () => {
-      await signOut(auth);
-      setUser(null);
-    };
+  const handleLogout = async () => {
+    await signOut(auth);
+    setUser(null);
+  };
 
-    if (loading) {
-      return (
+  if (loading) {
+    return (
       <div className='p-5 h-screen flex justify-center items-center'>
         <img src={loadingGif} alt="Loading..." className="mx-auto" />
       </div>
-      );
-    }
+    );
+  }
 
   return (
     <>
@@ -178,53 +195,55 @@ function App() {
         <AuthPage onLogin={() => setUser(auth.currentUser)} />
       ) : (
 
-      <div className="flex bg-stone-300">
-        <MenuBar
-          openMenu={openMenu}
-          onOpenMenu={handleOpenMenu}
-          onCloseMenu={handleCloseMenu}
-        />
-        <SideBar
-          noteData={noteData}
-          onSelectNote={setSelectedNoteId}
-          handleSelectNote={handleSelectNote}
-          setAppContent={setAppContent}
-          openMenu={openMenu}
-          setOpenMenu={setOpenMenu}
-        />
-        {appContent === 'main' &&
-          <MainPage
-            onCreateNote={handleCreateNote}
-            selectedNote={selectedNote}
-            onUpdateNote={handleUpdateNote}
-            handleLogout={handleLogout}
+        <div className="flex bg-stone-300">
+          <MenuBar
+            openMenu={openMenu}
+            onOpenMenu={handleOpenMenu}
+            onCloseMenu={handleCloseMenu}
+            menuRef={menuRef}
           />
-        }
-        {appContent === 'newNote' &&
-          <NewNote
-            key={selectedNoteId} // Ensure the component re-renders when a new note is created
-            handleSave={handleSave}
-            note={selectedNote}
-            onCancelNote={handleCancelNote}
-            setTitle={setTitle}
-            setContent={setContent}
-            title={title}
-            content={content}
-          />
-        }
-        {appContent === 'recent' &&
-          <StoreRecent
+          <SideBar
             noteData={noteData}
-            selectedNoteId={selectedNoteId}
-            selectedNote={selectedNote}
-            onUpdateNote={handleUpdateNote}
+            onSelectNote={setSelectedNoteId}
+            handleSelectNote={handleSelectNote}
             setAppContent={setAppContent}
-            handleCancelNote={handleCancelNote}
-            checkInput={checkInput}
-            handleDeleteNote={handleDeleteNote}
+            openMenu={openMenu}
+            setOpenMenu={setOpenMenu}
+            menuRef={menuRef}
           />
-        }
-      </div>
+          {appContent === 'main' &&
+            <MainPage
+              onCreateNote={handleCreateNote}
+              selectedNote={selectedNote}
+              onUpdateNote={handleUpdateNote}
+              handleLogout={handleLogout}
+            />
+          }
+          {appContent === 'newNote' &&
+            <NewNote
+              key={selectedNoteId} // Ensure the component re-renders when a new note is created
+              handleSave={handleSave}
+              note={selectedNote}
+              onCancelNote={handleCancelNote}
+              setTitle={setTitle}
+              setContent={setContent}
+              title={title}
+              content={content}
+            />
+          }
+          {appContent === 'recent' &&
+            <StoreRecent
+              noteData={noteData}
+              selectedNoteId={selectedNoteId}
+              selectedNote={selectedNote}
+              onUpdateNote={handleUpdateNote}
+              setAppContent={setAppContent}
+              handleCancelNote={handleCancelNote}
+              checkInput={checkInput}
+              handleDeleteNote={handleDeleteNote}
+            />
+          }
+        </div>
       )}
     </>
   );

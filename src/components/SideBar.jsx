@@ -1,4 +1,4 @@
-export default function SideBar({ noteData, onSelectNote, handleSelectNote, setAppContent, openMenu, setOpenMenu }) {
+export default function SideBar({ noteData, onSelectNote, handleSelectNote, setAppContent, openMenu, setOpenMenu , menuRef }) {
     return (
         <div className={`
             sideBar 
@@ -8,6 +8,8 @@ export default function SideBar({ noteData, onSelectNote, handleSelectNote, setA
             rounded-md 
             ${openMenu ? 'block' : 'hidden'} 
             md:block
+            max-md:absolute
+            max-md:z-0
         `}>
             <div className="sideBar-header grid gap-3 justify-center items-center p-4">
                 <button

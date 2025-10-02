@@ -63,7 +63,7 @@ export default function StoreRecent({
                     </div>
 
                     {isHovered === icons[0].id && (
-                        <p className='absolute top-0 bg-white text-black text-xs rounded-md p-1 shadow-md'>{icons[0].label}</p>
+                        <p className='absolute bg-white text-black text-xs rounded-md p-1 shadow-md'>{icons[0].label}</p>
                     )}
                 </button>
                 <button onClick={handleCancelNote}>
@@ -79,7 +79,7 @@ export default function StoreRecent({
                     </div>
 
                     {isHovered === icons[3].id && (
-                        <p className='absolute top-0 bg-white text-black text-xs rounded-md p-1 shadow-md'>{icons[3].label}</p>
+                        <p className='absolute bg-white text-black text-xs rounded-md p-1 shadow-md'>{icons[3].label}</p>
                     )}
                 </button>
                 {!editable ? (
@@ -96,7 +96,7 @@ export default function StoreRecent({
                         </div>
 
                         {isHovered === icons[1].id && (
-                            <p className='absolute top-0 bg-white text-black text-xs rounded-md p-1 shadow-md'>{icons[1].label}</p>
+                            <p className='absolute bg-white text-black text-xs rounded-md p-1 shadow-md'>{icons[1].label}</p>
                         )}
                     </button>
                 ) : (
@@ -113,7 +113,7 @@ export default function StoreRecent({
                         </div>
 
                         {isHovered === icons[2].id && (
-                            <p className='absolute top-0 bg-white text-black text-xs rounded-md p-1 shadow-md'>{icons[2].label}</p>
+                            <p className='absolute bg-white text-black text-xs rounded-md p-1 shadow-md'>{icons[2].label}</p>
                         )}
                     </button>
                 )}
